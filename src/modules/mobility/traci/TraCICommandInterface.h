@@ -68,6 +68,10 @@ class TraCICommandInterface
 		std::list<std::string> getRouteIds();
 		bool changeVehicleRoute(std::string nodeId, const std::list<std::string>& edges);
 		std::pair<double, double> positionConversionLonLat(const TraCICoord&);
+        double getVehicleAngle(std::string nodeId);
+        std::list<std::string> getVehicleIds();
+        TraCICoord getVehiclePosition(std::string nodeId);
+        double getLaneWidth(std::string laneId);
 
 	private:
 		TraCIConnection& connection;

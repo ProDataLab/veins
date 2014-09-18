@@ -366,6 +366,22 @@ std::pair<double, double> TraCICommandInterface::positionConversionLonLat(const 
     return std::make_pair(convPosLon, convPosLat);
 }
 
+double TraCICommandInterface::getVehicleAngle(std::string nodeId){
+    return genericGetDouble(CMD_GET_VEHICLE_VARIABLE, nodeId, VAR_ANGLE, RESPONSE_GET_VEHICLE_VARIABLE);
+}
+
+std::list<std::string> TraCICommandInterface::getVehicleIds() {
+    return genericGetStringList(CMD_GET_VEHICLE_VARIABLE, "", ID_LIST, RESPONSE_GET_VEHICLE_VARIABLE);
+}
+
+TraCICoord TraCICommandInterface::getVehiclePosition(std::string nodeId) {
+    return genericGetCoord(CMD_GET_VEHICLE_VARIABLE, nodeId, VAR_POSITION, RESPONSE_GET_VEHICLE_VARIABLE);
+}
+
+double TraCICommandInterface::getLaneWidth(std::string laneId) {
+    return genericGetDouble(CMD_GET_LANE_VARIABLE, laneId, VAR_WIDTH, RESPONSE_GET_LANE_VARIABLE);
+}
+
 std::string TraCICommandInterface::genericGetString(uint8_t commandId, std::string objectId, uint8_t variableId, uint8_t responseId) {
     uint8_t resultTypeId = TYPE_STRING;
     std::string res;
