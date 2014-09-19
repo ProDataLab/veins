@@ -133,6 +133,9 @@ class TraCIScenarioManager : public cSimpleModule
 		int vehicleRngIndex;
 		int numVehicles;
 
+        simsignal_t actualNumVehiclesSignal;
+        uint lastActualNumVehicles;
+
 		cRNG* mobRng;
 
 		bool autoShutdown; /**< Shutdown module as soon as no more vehicles are in the simulation */

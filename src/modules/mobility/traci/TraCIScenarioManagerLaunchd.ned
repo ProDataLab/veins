@@ -59,5 +59,8 @@ simple TraCIScenarioManagerLaunchd
         int numVehicles = default(0);
         bool useRouteDistributions = default(false);
         int vehicleRngIndex = default(0); // index of the RNG stream to be used, all random numbers concerning the managed vehicles
+
+        @signal[actualNumVehiclesSignal](type=long);
+        @statistic[actualNumVehiclesSignal](record=count,vector; description="Active vehicle count");
 }
 

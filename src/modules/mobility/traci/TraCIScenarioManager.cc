@@ -143,6 +143,9 @@ void TraCIScenarioManager::initialize(int stage) {
 	executeOneTimestepTrigger = new cMessage("step");
 	scheduleAt(firstStepAt, executeOneTimestepTrigger);
 
+    actualNumVehiclesSignal = registerSignal("actualNumVehiclesSignal");
+    lastActualNumVehicles = 0;
+
 	MYDEBUG << "initialized TraCIScenarioManager" << endl;
 }
 
@@ -602,7 +605,7 @@ void TraCIScenarioManager::processSimSubscription(std::string objectId, TraCIBuf
 
 			}
 
-			activeVehicleCount -= count;
+            activeVehicleCount -= count;
 			drivingVehicleCount -= count;
 
 		} else if (variable1_resp == VAR_TELEPORT_ENDING_VEHICLES_IDS) {
@@ -700,6 +703,22 @@ void TraCIScenarioManager::processVehicleSubscription(std::string objectId, TraC
 			uint32_t count; buf >> count;
 			MYDEBUG << "TraCI reports " << count << " active vehicles." << endl;
 			ASSERT(count == drivingVehicleCount);
+
+            int diff = count - lastActualNumVehicles;
+            if (diff) {
+                if (diff > 0) {
+                    for (uint i=0; i < (uint)diff; ++i)
+                        emit(actualNumVehiclesSignal, 1);
+                    lastActualNumVehicles = count;
+                }
+                else {
+                    for (uint i=0;i < (uint)abs(diff); ++i)
+                        emit(actualNumVehiclesSignal, -1);
+                    lastActualNumVehicles = count;
+                }
+            }
+
+
 			std::set<std::string> drivingVehicles;
 			for (uint32_t i = 0; i < count; ++i) {
 				std::string idstring; buf >> idstring;
